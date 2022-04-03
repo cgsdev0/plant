@@ -11,6 +11,7 @@ func on_leaf_drop(leaf):
 	leaf.set_global_transform(transformation)
 
 func on_branch_drop(branch):
+	branch.pot_ref = $PlantAndPot/Pot
 	self.add_child(branch)
 	$CutSound.play()
 	

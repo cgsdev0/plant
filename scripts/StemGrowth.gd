@@ -54,6 +54,20 @@ func unlock():
 		remove_child(child)
 		body.add_child(child)
 		child.translation -= offset
+		
+	var thing = body.get_global_transform().origin - body.pot_ref.get_global_transform().origin
+	thing.y = 0
+	var unit = thing.normalized()
+	if unit == Vector3.ZERO:
+		var kid = body.get_child(0)
+		unit = kid.get_global_transform().translated(Vector3(0, kid.height / 2, 0)).origin
+		unit.y = 0
+		unit = unit.normalized()
+	if unit == Vector3.ZERO:
+		unit = Vector3.FORWARD.rotated(Vector3.UP, rng.randf_range(0, 2 * PI))
+	body.apply_impulse(Vector3(0, 1, 0), unit * rng.randf_range(1, 2.4))
+	print(unit)
+	
 	set_script(null)
 	queue_free()
 
