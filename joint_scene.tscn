@@ -1,0 +1,14 @@
+[gd_scene format=2]
+
+[node name="Joint2" type="Generic6DOFJoint"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00941837, 2.27271, 0 )
+nodes/node_a = NodePath("../RigidBody")
+nodes/node_b = NodePath("../RigidBody2")
+angular_limit_x/upper_angle = 20.0
+angular_limit_x/lower_angle = -20.0
+angular_spring_x/enabled = true
+angular_spring_x/stiffness = 5.0
+angular_limit_z/upper_angle = 20.0
+angular_limit_z/lower_angle = -20.0
+angular_spring_z/enabled = true
+angular_spring_z/stiffness = 5.0

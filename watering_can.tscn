@@ -1,0 +1,107 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/watering_can_texture.tres" type="Material" id=1]
+
+[sub_resource type="CylinderShape" id=2]
+radius = 1.3
+height = 2.3
+
+[sub_resource type="SpatialMaterial" id=1]
+params_blend_mode = 1
+params_depth_draw_mode = 1
+albedo_color = Color( 0.0235294, 0.0823529, 0.309804, 1 )
+clearcoat_enabled = true
+clearcoat = 1.0
+clearcoat_gloss = 0.74
+
+[node name="Spatial" type="Spatial"]
+
+[node name="WateringCan" type="RigidBody" parent="."]
+mode = 3
+
+[node name="CollisionShape" type="CollisionShape" parent="WateringCan"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01201, 0 )
+shape = SubResource( 2 )
+
+[node name="Spatial" type="Spatial" parent="WateringCan"]
+
+[node name="WaterLevel" type="CSGCylinder" parent="WateringCan/Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16232, 0 )
+radius = 0.885
+material = SubResource( 1 )
+
+[node name="CSGBox" type="CSGCylinder" parent="WateringCan/Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.776995, 0 )
+height = 2.18
+sides = 23
+material = ExtResource( 1 )
+
+[node name="CSGCylinder3" type="CSGCylinder" parent="WateringCan/Spatial/CSGBox"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.895311, 0.285714, 0 )
+radius = 0.9
+height = 0.3
+material = ExtResource( 1 )
+
+[node name="CSGCylinder3" type="CSGCylinder" parent="WateringCan/Spatial/CSGBox/CSGCylinder3"]
+transform = Transform( 1, 0, 0, 0, 1, -8.35187e-23, 0, -8.35187e-23, 1, 0, 0, 0 )
+operation = 2
+radius = 0.75
+height = 0.3
+smooth_faces = false
+material = ExtResource( 1 )
+
+[node name="CSGCylinder4" type="CSGCylinder" parent="WateringCan/Spatial/CSGBox"]
+transform = Transform( 1, 0, -8.35187e-23, 0, 1, 0, -8.35187e-23, 0, 1, 3.55271e-15, 0.344067, -1.05879e-22 )
+operation = 2
+radius = 0.783
+height = 1.5
+material = ExtResource( 1 )
+
+[node name="CSGCylinder" type="CSGCylinder" parent="WateringCan/Spatial"]
+transform = Transform( 0.647548, 0.762025, 0, -0.762025, 0.647548, 0, 0, 0, 1, 2.30825, 1.43268, 0.00935888 )
+radius = 0.3
+height = 4.21541
+cone = true
+smooth_faces = false
+material = ExtResource( 1 )
+
+[node name="CSGCylinder2" type="CSGCylinder" parent="WateringCan/Spatial/CSGCylinder"]
+transform = Transform( 1, 0.000645876, 0, -0.000645876, 1, 0, 0, 0, 1, 0.0621644, 8.13733, 0 )
+operation = 2
+radius = 0.3
+height = 15.5846
+
+[node name="CSGCylinder" type="CSGCylinder" parent="WateringCan/Spatial/CSGCylinder"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0134121, 0.401677, 0 )
+radius = 0.3
+height = 0.1
+smooth_faces = false
+material = ExtResource( 1 )
+
+[node name="CSGCylinder3" type="CSGCylinder" parent="WateringCan/Spatial/CSGCylinder"]
+transform = Transform( 0.624725, 0.780845, 0, -0.780845, 0.624725, 0, 0, 0, 1, -0.542584, -0.678661, 0 )
+radius = 0.09
+height = 1.5
+smooth_faces = false
+material = ExtResource( 1 )
+
+[node name="CSGCylinder2" type="CSGCylinder" parent="WateringCan/Spatial"]
+transform = Transform( -4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 1.87425, 0 )
+radius = 1.05
+height = 0.3
+smooth_faces = false
+material = ExtResource( 1 )
+
+[node name="CSGCylinder5" type="CSGCylinder" parent="WateringCan/Spatial/CSGCylinder2"]
+transform = Transform( -4.37114e-08, 0, -1, 1, -4.37114e-08, -4.37114e-08, -4.37114e-08, -1, 1.91069e-15, 1.04216e-14, -2.07413e-07, 0.709315 )
+operation = 2
+radius = 0.885
+height = 1.5
+material = ExtResource( 1 )
+
+[node name="CSGCylinder3" type="CSGCylinder" parent="WateringCan/Spatial/CSGCylinder2"]
+transform = Transform( 1, 0, 0, 0, 1, -8.35187e-23, 0, -8.35187e-23, 1, 0, 0, 0 )
+operation = 2
+radius = 0.822
+height = 0.3
+material = ExtResource( 1 )
