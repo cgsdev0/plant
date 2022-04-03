@@ -12,7 +12,6 @@ func _ready():
 	
 func _process(_delta):
 	if translation.y < -20:
-		print("freed a branch_set")
 		queue_free()
 
 

@@ -39,6 +39,10 @@ func _ready():
 	pass # Replace with function body.
 
 
+var z_vel = 1
+var z_accel = 2.0
+var x_vel = 2
+var x_accel = -2.0
 func _process(delta):
 	growth += delta
 	var health_percent = 1
@@ -52,8 +56,11 @@ func _process(delta):
 				)
 	if dropped:
 		get_parent().translation.y -= delta
-		if get_parent().translation.y < -10:
-			print("freed a leaf")
+		get_parent().translation.z += delta * z_vel
+		get_parent().translation.x -= delta * x_vel
+		z_vel += z_accel * delta
+		x_vel += x_accel * delta
+		if get_parent().translation.y < -15:
 			get_parent().queue_free()
 	if (growth > (rng_lifespan) * (health_percent / 2 + 0.5)) && !predropped:
 		predropped = true

@@ -12,6 +12,7 @@ func on_leaf_drop(leaf):
 
 func on_branch_drop(branch):
 	self.add_child(branch)
+	$CutSound.play()
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -42,8 +43,6 @@ func get_object_under_segment(start: Vector2, end: Vector2):
 			if safety_check_start && safety_check_start.collider == selection.collider:
 				continue
 			var dist = $Camera.project_ray_origin(p).distance_to(selection.position)
-			print(dist)
-			print(selection.collider)
 			if dist < best_dist:
 				best_dist = dist
 				best_bet = selection
@@ -63,7 +62,6 @@ func _process(_delta):
 		return
 	var base_stem = $PlantAndPot/Plant.get_child(0)
 	if base_stem.health <= 0 && !end_state:
-		print("setting end state to true")
 		end_state = true
 		$Control/GameOver.modulate = Color.transparent
 		$Control/GameOver.visible = true
@@ -76,7 +74,9 @@ func _input(event):
 		pend_state = true
 		$Control/GameOver/AnimationPlayer.play("fadeOut")
 		$PlantAndPot/AnimationPlayer.play("Yeet")
+		$TossSound.play()
 		yield(get_tree().create_timer(1.0), "timeout")
+		$CrashSound.play()
 		for child in $PlantAndPot/Plant.get_children():
 			$PlantAndPot/Plant.remove_child(child)
 			child.queue_free()
@@ -107,11 +107,18 @@ func _input(event):
 				startable = false
 			else:
 				return
+			$WateringCan/AnimationPlayer.play("Water")
+			$WateringCan/StartSound.play()
+			yield(get_tree().create_timer(1.0), "timeout")
+			$WateringCan/Control/Particles.emitting = true
+			yield(get_tree().create_timer(2.0), "timeout")
 			var starting_stem = preload("res://stem.tscn").instance()
 			starting_stem.set_script(preload("res://scripts/StemGrowth.gd"))
 			starting_stem.uncuttable = true
 			$PlantAndPot/Plant.add_child(starting_stem)
 			starting_stem.translation.y += 0.5
+			yield(get_tree().create_timer(1.0), "timeout")
+			$WateringCan/Control/Particles.emitting = false
 		elif sel && sel.collider && sel.collider.get_name() == "Pot":
 			pot_clicked = true
 			pot_start = get_viewport().get_mouse_position().x

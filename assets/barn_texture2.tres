@@ -1,0 +1,8 @@
+[gd_resource type="SpatialMaterial" load_steps=2 format=2]
+
+[ext_resource path="res://assets/wood2.png" type="Texture" id=1]
+
+[resource]
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 1.732, 3.678, 0.827 )
+uv1_offset = Vector3( 0, -0.699, 0 )

@@ -8,7 +8,7 @@ extends Spatial
 onready var events = get_node("/root/Events")
 
 export var uncuttable = false
-export var target_height = 0.25
+export var target_height = 0.23
 export var target_radius = 0.025
 export var growth_span = 10.0
 export var radius_ratio = 2
@@ -64,7 +64,7 @@ func _ready():
 
 	health = float(max(1, generation - 2))
 	if generation == 5:
-		health += 2.0
+		health += 3.6
 	starting_health = health
 	final_color = Color(0.39, 0.27, 0.14)
 	origin = translation
@@ -149,8 +149,6 @@ var wait = 0
 func add_new_leaf():
 	var new_leaf = preload("res://leaf_scene.tscn").instance()
 	new_leaf.translation.y += rng.randf_range(0.2, clamp(growth / growth_span, 0, 1)) * target_height
-	print("made new leaf", new_leaf.get_instance_id())
-	print("health: ", health)
 	new_leaf.rotate_x(rng.randf_range(-PI / 6, PI / 6))
 	new_leaf.rotate_z(rng.randf_range(-PI / 6, PI / 6))
 	new_leaf.rotate_y(rng.randf_range(0, 2 * PI))

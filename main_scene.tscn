@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://assets/pot_texture.tres" type="Material" id=1]
 [ext_resource path="res://scripts/LeafBlower.gd" type="Script" id=2]
@@ -8,6 +8,18 @@
 [ext_resource path="res://assets/stem_texture.tres" type="Material" id=6]
 [ext_resource path="res://watering_can.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/wood_texture.tres" type="Material" id=8]
+[ext_resource path="res://assets/grassy.png" type="Texture" id=9]
+[ext_resource path="res://assets/fullscreen.png" type="Texture" id=10]
+[ext_resource path="res://assets/barn_texture.tres" type="Material" id=11]
+[ext_resource path="res://assets/barn_texture2.tres" type="Material" id=12]
+[ext_resource path="res://assets/wood_texture_dark.tres" type="Material" id=13]
+[ext_resource path="res://assets/grass.tres" type="QuadMesh" id=14]
+[ext_resource path="res://FullscreenButton.gd" type="Script" id=15]
+[ext_resource path="res://audio/soundscape_thing.wav" type="AudioStream" id=16]
+[ext_resource path="res://audio/start_game.wav" type="AudioStream" id=17]
+[ext_resource path="res://audio/potential_cut.wav" type="AudioStream" id=18]
+[ext_resource path="res://audio/explosion.wav" type="AudioStream" id=19]
+[ext_resource path="res://audio/toss.wav" type="AudioStream" id=20]
 
 [sub_resource type="Animation" id=7]
 resource_name = "Yeet"
@@ -34,7 +46,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1, 1.5, 1.8, 1.9, 2.4 ),
 "transitions": PoolRealArray( 0.482968, 0.366022, 0.435275, 1, 1, 0.554785 ),
 "update": 0,
-"values": [ Vector3( 0, 0, -0.722092 ), Vector3( 0, 0.5, -0.722 ), Vector3( -20, 6, 0 ), Vector3( -20, 10, 0 ), Vector3( 0, 10, -0.722 ), Vector3( 0, 0, -0.722 ) ]
+"values": [ Vector3( 0.5, 0, -1.2 ), Vector3( 0.5, 0.5, -1.2 ), Vector3( -20, 6, -1.2 ), Vector3( -20, 10, -10 ), Vector3( 0.5, 10, -1.2 ), Vector3( 0.5, 0, -1.2 ) ]
 }
 
 [sub_resource type="SpatialMaterial" id=2]
@@ -43,22 +55,84 @@ albedo_color = Color( 0.113725, 0.054902, 0.0156863, 1 )
 [sub_resource type="CylinderShape" id=3]
 height = 1.5
 
+[sub_resource type="Animation" id=17]
+resource_name = "Water"
+length = 5.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7, 4.8, 5.5 ),
+"transitions": PoolRealArray( 0.517633, 1, -1.51572, -2 ),
+"update": 0,
+"values": [ Vector3( 5.55839, -0.796686, -1.16222 ), Vector3( 3, 2, -1.162 ), Vector3( 3, 2, -1.162 ), Vector3( 5.55839, -0.796686, -1.16222 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4, 1.1, 4.4, 5.1, 5.5 ),
+"transitions": PoolRealArray( 1.18921, -1.68179, 1, -1.8025, -1.68179, 1 ),
+"update": 0,
+"values": [ Vector3( 0, -166.33, 0 ), Vector3( 0, -180, 0 ), Vector3( 0, -180, -50 ), Vector3( 0, -180, -50 ), Vector3( 0, -166.33, 0 ), Vector3( 0, -166.33, 0 ) ]
+}
+
+[sub_resource type="SpatialMaterial" id=12]
+albedo_color = Color( 0.631373, 0.505882, 0.172549, 1 )
+albedo_texture = ExtResource( 9 )
+uv1_scale = Vector3( 5, 10, 4 )
+
+[sub_resource type="QuadMesh" id=13]
+material = SubResource( 12 )
+size = Vector2( 50, 25 )
+
+[sub_resource type="SpatialMaterial" id=16]
+albedo_color = Color( 0.254902, 0.254902, 0.254902, 1 )
+
 [sub_resource type="SpatialMaterial" id=6]
 albedo_color = Color( 0.180392, 0.0823529, 0.121569, 1 )
 
-[sub_resource type="Environment" id=1]
-ambient_light_color = Color( 1, 1, 1, 1 )
-ambient_light_energy = 0.71
-ambient_light_sky_contribution = 0.78
-glow_enabled = true
-glow_intensity = 6.0
-glow_strength = 1.3
+[sub_resource type="ProceduralSky" id=11]
+radiance_size = 1
+sky_top_color = Color( 0.117647, 0.560784, 0.803922, 1 )
+sky_horizon_color = Color( 0.537255, 0.67451, 0.784314, 1 )
+sky_curve = 0.491774
+sky_energy = 1.99
 
-[sub_resource type="Shader" id=4]
+[sub_resource type="Environment" id=1]
+background_mode = 1
+background_sky = SubResource( 11 )
+background_color = Color( 0.227451, 0.52549, 0.780392, 1 )
+background_energy = 0.0
+ambient_light_color = Color( 0.964706, 0.964706, 0.964706, 1 )
+ambient_light_energy = 0.71
+fog_color = Color( 0.658824, 0.658824, 0.658824, 1 )
+fog_sun_color = Color( 0.8, 0.772549, 0.717647, 1 )
+fog_depth_begin = 36.0
+fog_depth_end = 90.0
+fog_depth_curve = 1.23114
+fog_transmit_curve = 6.49804
+fog_height_curve = 1.27456
+dof_blur_far_distance = 16.26
+dof_blur_far_transition = 7.56
+dof_blur_far_amount = 1.0
+dof_blur_far_quality = 2
+dof_blur_near_enabled = true
+glow_intensity = 4.36
+glow_strength = 1.13
+glow_bloom = 0.04
+
+[sub_resource type="Shader" id=14]
 code = "shader_type canvas_item;
 
 uniform float vignette_intensity = 0.3;
-uniform float vignette_opacity : hint_range(0.0, 1.0) = 0.1;
+uniform float vignette_opacity : hint_range(0.0, 1.0) = 0.4;
 uniform vec4 vignette_rgb : hint_color = vec4(0.0, 0.0, 0.0, 1.0);
 
 float vignette(vec2 uv){
@@ -77,10 +151,10 @@ void fragment(){
 	COLOR = vec4((text.rgb)*color.rgb,text.a);
 }"
 
-[sub_resource type="ShaderMaterial" id=5]
-shader = SubResource( 4 )
+[sub_resource type="ShaderMaterial" id=15]
+shader = SubResource( 14 )
 shader_param/vignette_intensity = 0.3
-shader_param/vignette_opacity = 0.1
+shader_param/vignette_opacity = 0.4
 shader_param/vignette_rgb = Color( 0, 0, 0, 1 )
 
 [sub_resource type="DynamicFont" id=8]
@@ -121,7 +195,7 @@ tracks/0/keys = {
 script = ExtResource( 2 )
 
 [node name="PlantAndPot" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.722092 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -1.2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PlantAndPot"]
 anims/Yeet = SubResource( 7 )
@@ -180,8 +254,11 @@ height = 0.2
 material = ExtResource( 6 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( -0.996195, -0.0225575, 0.0841859, 0, 0.965926, 0.258819, -0.0871556, 0.257834, -0.96225, 1.00667, 3.56554, -7.3833 )
+transform = Transform( -0.996195, -0.0225575, 0.0841858, 0, 0.965926, 0.258819, -0.0871556, 0.257834, -0.96225, 1.00667, 3.56554, -7.3833 )
+current = true
 fov = 65.7
+near = 2.23
+far = 149.3
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.943014, -0.0932999, 0.319404, -0.310552, -0.591506, 0.744096, 0.119505, -0.800884, -0.586773, 11.0763, 14.3726, 10.0141 )
@@ -191,6 +268,382 @@ shadow_enabled = true
 
 [node name="WateringCan" parent="." instance=ExtResource( 7 )]
 transform = Transform( -0.485836, 0, -0.118165, 0, 0.5, 0, 0.118165, 0, -0.485836, 5.55839, -0.796686, -1.16222 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="WateringCan"]
+anims/Water = SubResource( 17 )
+
+[node name="Control" type="Control" parent="WateringCan"]
+anchor_left = 0.413
+anchor_top = 0.474
+anchor_right = 0.413
+anchor_bottom = 0.474
+
+[node name="Particles" type="CPUParticles2D" parent="WateringCan/Control"]
+emitting = false
+amount = 35
+lifetime = 2.0
+emission_shape = 1
+emission_sphere_radius = 16.0
+initial_velocity = 60.0
+scale_amount = 10.0
+scale_amount_random = 0.28
+color = Color( 0.317647, 0.92549, 0.972549, 0.623529 )
+
+[node name="StartSound" type="AudioStreamPlayer" parent="WateringCan"]
+stream = ExtResource( 17 )
+volume_db = -9.614
+
+[node name="Barn" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -30.1017, 0, 0 )
+
+[node name="dirt2" type="CSGMesh" parent="Barn"]
+transform = Transform( -4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, -6.904, -6.6, 61.8141 )
+mesh = SubResource( 13 )
+
+[node name="Plank6" type="CSGBox" parent="Barn"]
+transform = Transform( 1.52855e-15, 3.49691e-08, 0.8, 0.8, -3.49691e-08, 0, 3.49691e-08, 0.8, -3.49691e-08, -16.5644, -1.16151, 36.8266 )
+width = 22.8208
+height = 0.408
+depth = 2.4
+material = ExtResource( 11 )
+
+[node name="Plank9" type="CSGBox" parent="Barn"]
+transform = Transform( 1.52855e-15, 3.49691e-08, 0.8, 0.8, -3.49691e-08, 0, 3.49691e-08, 0.8, -3.49691e-08, -18.6595, -2.70189, 36.8266 )
+width = 22.8208
+height = 0.408
+depth = 2.4
+material = ExtResource( 11 )
+
+[node name="Plank15" type="CSGBox" parent="Barn"]
+transform = Transform( 3.49691e-08, 0.8, -6.99382e-08, 0.8, -3.49691e-08, 0, -3.0571e-15, -6.99382e-08, -0.8, -19.7652, -2.70189, 52.2925 )
+width = 22.8208
+height = 0.408
+depth = 38.2762
+material = ExtResource( 11 )
+
+[node name="Plank25" type="CSGBox" parent="Barn"]
+transform = Transform( 0.0938219, 0.0152657, -0.794333, 0.794479, -0.0018028, 0.0938046, -3.49627e-08, -0.799852, -0.0153718, -9.01937, -2.70189, 61.7009 )
+width = 38.0429
+height = 0.408
+depth = 38.2762
+material = ExtResource( 11 )
+
+[node name="CSGBox" type="CSGBox" parent="Barn/Plank25"]
+transform = Transform( 0.902177, -0.00828848, 0.431281, 0.00828849, 0.999962, 0.00187924, -0.431281, 0.0018793, 0.902213, 19.0644, 0.301361, -15.6769 )
+operation = 2
+width = 8.02427
+depth = 20.5991
+
+[node name="Plank20" type="CSGBox" parent="Barn"]
+transform = Transform( 2.29003e-08, 0.523898, 0.604591, 0.8, -3.49691e-08, 0, 2.64275e-08, 0.604591, -0.523898, -3.93295, -2.70189, 38.6957 )
+width = 18.2075
+height = 0.408
+depth = 6.69488
+material = ExtResource( 13 )
+
+[node name="Plank21" type="CSGBox" parent="Barn"]
+transform = Transform( -3.32451e-08, -0.76056, 0.24809, 0.8, -3.49691e-08, 0, 1.08444e-08, 0.24809, 0.76056, -10.6032, -2.70189, 39.3955 )
+width = 18.2075
+height = 0.408
+depth = 6.69488
+material = ExtResource( 13 )
+
+[node name="Plank22" type="CSGBox" parent="Barn"]
+transform = Transform( -0.00486357, 0.43655, 0.670373, -0.0171227, -0.670289, 0.436371, 0.799802, -0.0116953, 0.0134187, -16.5014, 8.48243, 49.4871 )
+width = 35.1094
+height = 0.408
+depth = 14.3132
+material = ExtResource( 13 )
+
+[node name="Plank23" type="CSGBox" parent="Barn"]
+transform = Transform( -0.0176204, -0.434743, 0.671333, -0.00252225, -0.671462, -0.434893, 0.799802, -0.0116953, 0.0134187, 3.26074, 8.91671, 49.69 )
+width = 35.1094
+height = 0.408
+depth = 14.3132
+material = ExtResource( 13 )
+
+[node name="Plank24" type="CSGBox" parent="Barn"]
+transform = Transform( 0.0068464, 0.0228969, 0.799643, -0.0120779, -0.799578, 0.0229985, 0.79988, -0.0122693, -0.00649709, -6.34133, 11.8398, 49.69 )
+width = 35.1094
+height = 0.408
+depth = 12.8124
+material = ExtResource( 13 )
+
+[node name="Plank16" type="CSGBox" parent="Barn"]
+transform = Transform( 3.49691e-08, 0.8, -6.99382e-08, 0.8, -3.49691e-08, 0, -3.0571e-15, -6.99382e-08, -0.8, 6.77272, -2.70189, 52.2925 )
+width = 22.8208
+height = 0.408
+depth = 38.2762
+material = ExtResource( 11 )
+
+[node name="Plank7" type="CSGBox" parent="Barn"]
+transform = Transform( 1.52855e-15, 3.49691e-08, 0.8, 0.8, -3.49691e-08, 0, 3.49691e-08, 0.8, -3.49691e-08, -14.4914, 0.603132, 36.8266 )
+width = 22.8208
+height = 0.408
+depth = 2.4
+material = ExtResource( 11 )
+
+[node name="Plank8" type="CSGBox" parent="Barn"]
+transform = Transform( 1.52855e-15, 3.49691e-08, 0.8, 0.8, -3.49691e-08, 0, 3.49691e-08, 0.8, -3.49691e-08, -12.4059, 2.10949, 36.8266 )
+width = 22.8208
+height = 0.408
+depth = 2.4
+material = ExtResource( 11 )
+
+[node name="Plank17" type="CSGBox" parent="Barn"]
+transform = Transform( -0.799976, 0.00480315, 0.0039932, 0.00399327, 3.47941e-08, 0.79999, 0.00480309, 0.799986, -2.40101e-05, -6.63746, 6.16466, 36.8889 )
+width = 12.9652
+height = 0.408
+depth = 2.4
+material = ExtResource( 11 )
+
+[node name="Plank18" type="CSGBox" parent="Barn"]
+transform = Transform( -0.799976, 0.00480315, 0.0039932, 0.00399327, 3.47941e-08, 0.79999, 0.00480309, 0.799986, -2.40101e-05, -6.63746, 8.22495, 36.8889 )
+width = 12.9652
+height = 0.408
+depth = 2.4
+material = ExtResource( 11 )
+
+[node name="Plank19" type="CSGBox" parent="Barn"]
+transform = Transform( -0.799203, 0.00479733, -0.0353699, -0.0353691, 0.000236342, 0.799218, 0.00480309, 0.799986, -2.40101e-05, -6.63746, 10.2948, 36.8889 )
+width = 12.9652
+height = 0.408
+depth = 2.4
+material = ExtResource( 11 )
+
+[node name="Plank10" type="CSGBox" parent="Barn"]
+transform = Transform( 2.57554e-10, 0.00589216, -0.799978, 0.8, -3.49691e-08, 0, -3.49682e-08, -0.799978, -0.00589216, 3.37634, -1.16151, 36.8342 )
+width = 22.8208
+height = 0.408
+depth = 2.4
+material = ExtResource( 11 )
+
+[node name="Plank11" type="CSGBox" parent="Barn"]
+transform = Transform( 2.57554e-10, 0.00589216, -0.799978, 0.8, -3.49691e-08, 0, -3.49682e-08, -0.799978, -0.00589216, 5.47143, -2.70189, 36.8497 )
+width = 22.8208
+height = 0.408
+depth = 2.4
+material = ExtResource( 11 )
+
+[node name="Plank12" type="CSGBox" parent="Barn"]
+transform = Transform( 2.57554e-10, 0.00589216, -0.799978, 0.8, -3.49691e-08, 0, -3.49682e-08, -0.799978, -0.00589216, 1.30341, 0.603132, 36.819 )
+width = 22.8208
+height = 0.408
+depth = 2.4
+material = ExtResource( 11 )
+
+[node name="Plank13" type="CSGBox" parent="Barn"]
+transform = Transform( 2.57554e-10, 0.00589216, -0.799978, 0.8, -3.49691e-08, 0, -3.49682e-08, -0.799978, -0.00589216, -0.781986, 2.10949, 36.8036 )
+width = 22.8208
+height = 0.408
+depth = 2.4
+material = ExtResource( 11 )
+
+[node name="Plank14" type="CSGBox" parent="Barn"]
+transform = Transform( -0.799892, 9.68007e-05, -0.0131379, 0.0131382, 0.00589136, -0.79987, -3.49682e-08, -0.799978, -0.00589216, -6.38354, 4.05841, 36.2564 )
+width = 38.9973
+height = 0.408
+depth = 2.4
+material = ExtResource( 12 )
+
+[node name="Rocks" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -30.1017, 0, 0 )
+
+[node name="CSGSphere" type="CSGSphere" parent="Rocks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.84339, -4.45745, 63.24 )
+radius = 6.1906
+radial_segments = 5
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere7" type="CSGSphere" parent="Rocks"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 30.2271, -7.05085, 65.9066 )
+radius = 4.03754
+radial_segments = 9
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere6" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.875481, 0.483252, 0, -0.483252, 0.875481, 0, 0, 0, 1, 41.9184, -5.77261, 69.44 )
+radius = 4.74113
+radial_segments = 5
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere2" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.901191, 0, 0.433423, 0, 1, 0, -0.433423, 0, 0.901191, 10.1788, -4.88111, 70.686 )
+radius = 11.9633
+radial_segments = 5
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere4" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.44896, 0, 0.893552, 0, 1, 0, -0.893552, 0, 0.44896, 34.1631, -5.46908, 74.7088 )
+radius = 11.9633
+radial_segments = 6
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere3" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.901191, 0, 0.433423, -0.319379, 0.676028, 0.664066, -0.293006, -0.736876, 0.60923, 21.7267, -4.88111, 70.686 )
+radius = 9.47686
+radial_segments = 7
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere5" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.901191, 0, 0.433423, -0.427979, -0.158003, 0.88987, 0.0684821, -0.987439, -0.142391, 46.5578, -4.88111, 76.5689 )
+radius = 9.47686
+radial_segments = 4
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere8" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.915417, 0, 0.402507, 0, 1, 0, -0.402507, 0, 0.915417, 53.7126, -4.45745, 75.0519 )
+radius = 6.1906
+radial_segments = 5
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere9" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.915417, 0, 0.402507, 0, 1, 0, -0.402507, 0, 0.915417, 74.361, -7.05085, 68.8858 )
+radius = 4.03754
+radial_segments = 9
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere10" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.80143, 0.442377, 0.402507, -0.483252, 0.875481, 0, -0.352387, -0.194512, 0.915417, 86.4856, -5.77261, 67.4146 )
+radius = 4.74113
+radial_segments = 5
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere11" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.650509, 0, 0.759498, 0, 1, 0, -0.759498, 0, 0.650509, 57.9321, -4.88111, 81.3305 )
+radius = 11.9633
+radial_segments = 5
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere12" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.0513251, 0, 0.998682, 0, 1, 0, -0.998682, 0, 0.0513251, 81.5069, -5.46908, 75.3593 )
+radius = 11.9633
+radial_segments = 6
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere13" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.707028, -0.296598, 0.641982, -0.319379, 0.676028, 0.664066, -0.630958, -0.674549, 0.383243, 68.5033, -4.88111, 76.6824 )
+radius = 9.47686
+radial_segments = 7
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere14" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.85253, -0.397451, 0.33945, -0.427979, -0.158003, 0.88987, -0.300046, -0.903918, -0.304803, 93.602, -4.88111, 72.073 )
+radius = 9.47686
+radial_segments = 4
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere15" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.901191, 0, 0.433423, -0.378393, -0.487662, 0.786769, 0.211364, -0.873033, -0.439476, 79.992, -6.14602, 76.1352 )
+radius = 9.47686
+radial_segments = 4
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere16" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.915417, 0, 0.402507, -0.138299, 0.939118, 0.314532, -0.378002, -0.343594, 0.859685, 87.1468, -6.26939, 74.565 )
+radius = 6.1906
+radial_segments = 5
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere17" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.915417, 0, 0.402507, -0.138299, 0.939118, 0.314532, -0.378002, -0.343594, 0.859685, 107.795, -10.8235, 69.6654 )
+radius = 4.03754
+radial_segments = 9
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere18" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.80143, 0.442377, 0.402507, -0.574909, 0.755347, 0.314532, -0.164891, -0.48348, 0.859685, 119.92, -10.1286, 67.8445 )
+radius = 4.74113
+radial_segments = 5
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere19" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.650509, 0, 0.759498, -0.260959, 0.939118, 0.223511, -0.713259, -0.343594, 0.610905, 91.3662, -4.50994, 80.6069 )
+radius = 11.9633
+radial_segments = 5
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere20" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.0513251, 0, 0.998682, -0.343141, 0.939118, 0.017635, -0.93788, -0.343594, 0.0482003, 114.941, -7.1138, 75.2013 )
+radius = 11.9633
+radial_segments = 6
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere21" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.707028, -0.296598, 0.641982, -0.516728, 0.403099, 0.755317, -0.482808, -0.86576, 0.131742, 101.937, -6.10702, 76.2418 )
+radius = 9.47686
+radial_segments = 7
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere22" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.85253, -0.397451, 0.33945, -0.505017, -0.458964, 0.730965, -0.134727, -0.794597, -0.592, 127.036, -7.69077, 71.913 )
+radius = 9.47686
+radial_segments = 4
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere23" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.946619, 0.218715, -0.236804, -0.138299, 0.939118, 0.314532, 0.29118, -0.264992, 0.919235, -38.0562, -10.8235, 50.5408 )
+radius = 4.03754
+radial_segments = 9
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere24" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.723053, 0.648936, -0.236804, -0.574909, 0.755347, 0.314532, 0.38298, -0.0912825, 0.919235, -27.5462, -10.1286, 56.8544 )
+radius = 4.74113
+radial_segments = 5
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere25" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.955721, 0.218715, 0.196881, -0.260959, 0.939118, 0.223511, -0.13601, -0.264992, 0.95461, -57.6916, -4.50994, 48.5215 )
+radius = 11.9633
+radial_segments = 5
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere26" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.636591, 0.218715, 0.739537, -0.343141, 0.939118, 0.017635, -0.690656, -0.264992, 0.672884, -36.0688, -7.1138, 59.359 )
+radius = 11.9633
+radial_segments = 6
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere27" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.852616, 0.322352, 0.41126, -0.516728, 0.403099, 0.755317, 0.0776999, -0.856505, 0.510257, -46.7601, -6.10702, 51.884 )
+radius = 9.47686
+radial_segments = 7
+smooth_faces = false
+material = SubResource( 16 )
+
+[node name="CSGSphere28" type="CSGSphere" parent="Rocks"]
+transform = Transform( 0.743262, 0.199272, 0.638633, -0.505017, -0.458964, 0.730965, 0.438771, -0.865819, -0.240495, -24.6476, -7.69077, 64.5221 )
+radius = 9.47686
+radial_segments = 4
+smooth_faces = false
+material = SubResource( 16 )
 
 [node name="Table" type="Spatial" parent="."]
 
@@ -242,6 +695,10 @@ height = 5.0
 depth = 2.7
 material = SubResource( 6 )
 
+[node name="grass" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -6.61003, 90.8727 )
+mesh = ExtResource( 14 )
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 1 )
 
@@ -262,13 +719,14 @@ anchor_bottom = 1.0
 script = ExtResource( 4 )
 
 [node name="Vignette" type="ColorRect" parent="Control"]
-material = SubResource( 5 )
+material = SubResource( 15 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="GameOver" type="Label" parent="Control"]
 visible = false
+modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_fonts/font = SubResource( 8 )
@@ -282,3 +740,35 @@ valign = 1
 root_node = NodePath("../../..")
 anims/fadeIn = SubResource( 10 )
 anims/fadeOut = SubResource( 9 )
+
+[node name="Button" type="TextureButton" parent="Control"]
+modulate = Color( 0.0862745, 0.164706, 0.313726, 1 )
+margin_left = 26.0
+margin_top = 26.0
+margin_right = 90.0
+margin_bottom = 90.0
+focus_mode = 0
+enabled_focus_mode = 0
+texture_normal = ExtResource( 10 )
+texture_pressed = ExtResource( 10 )
+texture_hover = ExtResource( 10 )
+script = ExtResource( 15 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+volume_db = -2.621
+pitch_scale = 0.9
+autoplay = true
+
+[node name="CutSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 18 )
+volume_db = 4.37
+
+[node name="TossSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 20 )
+volume_db = -14.0
+
+[node name="CrashSound" type="AudioStreamPlayer3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.2804, -4.50453, -5.14197 )
+stream = ExtResource( 19 )
+unit_db = 24.0
