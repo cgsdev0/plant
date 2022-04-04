@@ -9,3 +9,8 @@ if you don’t cut them, the plant still dies.
 
 play it here: https://badcop.itch.io/plant
 view the ludum dare submission here: https://ldjam.com/events/ludum-dare/50/plant
+
+### credits
+
+- me
+- rare for making [the field guide font](https://rarelikeaunicorn.itch.io/field-guide)
