@@ -15,8 +15,10 @@ func on_branch_drop(branch):
 	self.add_child(branch)
 	$CutSound.play()
 	
+var defaultPianoVol
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	defaultPianoVol = $PianoLoop.volume_db
 	events.connect("drop_leaf", self, "on_leaf_drop")
 	events.connect("unlock_branch", self, "on_branch_drop")
 	pass # Replace with function body.
@@ -67,6 +69,9 @@ func _process(_delta):
 		$Control/GameOver.modulate = Color.transparent
 		$Control/GameOver.visible = true
 		$Control/GameOver/AnimationPlayer.play("fadeIn")
+		$PianoLoop/AnimationPlayer.play("fadeOut")
+		yield(get_tree().create_timer(1.8), "timeout")
+		$PianoLoop.stop()
 		
 var cut_start
 func _input(event):
@@ -120,6 +125,9 @@ func _input(event):
 			starting_stem.translation.y += 0.5
 			yield(get_tree().create_timer(1.0), "timeout")
 			$WateringCan/Control/Particles.emitting = false
+			yield(get_tree().create_timer(3.0), "timeout")
+			$PianoLoop.volume_db = defaultPianoVol
+			$PianoLoop.play()
 		elif sel && sel.collider && sel.collider.get_name() == "Pot":
 			pot_clicked = true
 			pot_start = get_viewport().get_mouse_position().x

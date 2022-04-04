@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://assets/pot_texture.tres" type="Material" id=1]
 [ext_resource path="res://scripts/LeafBlower.gd" type="Script" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://audio/potential_cut.wav" type="AudioStream" id=18]
 [ext_resource path="res://audio/explosion.wav" type="AudioStream" id=19]
 [ext_resource path="res://audio/toss.wav" type="AudioStream" id=20]
+[ext_resource path="res://audio/piano.ogg" type="AudioStream" id=21]
 
 [sub_resource type="Animation" id=7]
 resource_name = "Yeet"
@@ -189,6 +190,22 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1.62451, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=18]
+resource_name = "fadeOut"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -50.0, -15.0 ]
 }
 
 [node name="Spatial" type="Spatial"]
@@ -756,7 +773,7 @@ script = ExtResource( 15 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 16 )
-volume_db = -2.621
+volume_db = -1.0
 pitch_scale = 0.9
 autoplay = true
 
@@ -772,3 +789,10 @@ volume_db = -14.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.2804, -4.50453, -5.14197 )
 stream = ExtResource( 19 )
 unit_db = 24.0
+
+[node name="PianoLoop" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 21 )
+volume_db = -15.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PianoLoop"]
+anims/fadeOut = SubResource( 18 )
