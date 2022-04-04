@@ -205,7 +205,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ -50.0, -15.0 ]
+"values": [ -15.0, -50.0 ]
 }
 
 [node name="Spatial" type="Spatial"]
@@ -792,7 +792,7 @@ unit_db = 24.0
 
 [node name="PianoLoop" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 21 )
-volume_db = -15.0
+volume_db = -50.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PianoLoop"]
 anims/fadeOut = SubResource( 18 )
