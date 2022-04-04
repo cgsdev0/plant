@@ -13,4 +13,4 @@ view the ludum dare submission here: https://ldjam.com/events/ludum-dare/50/plan
 ### credits
 
 - me
-- rare for making [the field guide font](https://rarelikeaunicorn.itch.io/field-guide)
+- rare for making [the 'field guide' font](https://rarelikeaunicorn.itch.io/field-guide)
